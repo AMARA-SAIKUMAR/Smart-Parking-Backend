@@ -2,6 +2,8 @@ package com.parking.Models;
 
 import java.time.LocalTime;
 
+import org.springframework.boot.context.properties.bind.DefaultValue;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
