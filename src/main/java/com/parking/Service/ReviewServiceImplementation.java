@@ -1,5 +1,7 @@
 package com.parking.Service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,14 @@ public class ReviewServiceImplementation implements ReviewService {
 		newReview.setUserId(userId);
 		
 		return reviewRepository.save(newReview);
+	}
+
+	@Override
+	public List<Review> findAllReviews() {
+		
+		List<Review> allReviews = reviewRepository.findAll();
+		
+		return allReviews;
 	}
 
 }

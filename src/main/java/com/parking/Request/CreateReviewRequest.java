@@ -11,8 +11,6 @@ public class CreateReviewRequest {
 	
 	String review;
 	
-	Long userId;
-	
 	int rating;
 
 }

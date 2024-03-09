@@ -1,6 +1,9 @@
 package com.parking.Service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.parking.Exceptions.SlotException;
@@ -19,6 +22,7 @@ public class SlotServiceImplementation implements SlotService {
 	public Slot createSlot(CreateSlotRequest req) {
 		
 		Slot createdSlot = new Slot();
+		createdSlot.setOccupancyStatus("free");
 		createdSlot.setWheelerType(req.getWheelerType());
 		
 		return slotRepository.save(createdSlot);
@@ -35,5 +39,23 @@ public class SlotServiceImplementation implements SlotService {
 		
 		return response;
 	}
+
+	@Override
+	public List<Slot> findAllSlots() {
+		
+		List<Slot> allSlots = slotRepository.findAll();
+		
+		return allSlots;
+	}
+
+//	@Override
+//	public Response createMultipleSlots(List<CreateSlotRequest> requests) {
+//		
+//		
+//		
+//		return null;
+//	}
+	
+	
 
 }
