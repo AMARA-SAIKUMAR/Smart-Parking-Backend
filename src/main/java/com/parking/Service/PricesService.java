@@ -1,17 +1,18 @@
 package com.parking.Service;
 
+import com.parking.Models.Prices;
+import com.parking.Request.UpdatePricesRequest;
+
 public interface PricesService {
 	
-	public int getTwoWheelerParkingPrice();
+	public Integer getTwoWheelerParkingPrice();
 	
-	public int getThreeWheelerParkingPrice();
+	public Integer getThreeWheelerParkingPrice();
 	
-	public int getFourWheelerParkingPrice();
+	public Integer getFourWheelerParkingPrice();
 	
-	public int updateTwoWheelerParkingPrice();
+	public Prices updateParkingPrices(UpdatePricesRequest request);
 	
-	public int updateThreeWheelerParkingPrice();
-	
-	public int updateFourWheelerParkingPrice();
+
 
 }

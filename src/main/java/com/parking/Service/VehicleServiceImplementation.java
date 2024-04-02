@@ -14,24 +14,16 @@ import com.parking.Request.CreateVehicleRequest;
 public class VehicleServiceImplementation implements VehicleService {
 	
 	@Autowired
-	private UserService userService;
-	@Autowired
 	private VehicleRepository vehicleRepository;
-	@Autowired
-	private UserRepository userRepository;
+	
+
 
 	@Override
-	public Vehicle addVehicle(CreateVehicleRequest request, Long userId) throws UserException {
+	public Vehicle createVehicle(String vehicleNumber)  {
 		
 		Vehicle createdVehicle = new Vehicle();
-		createdVehicle.setVehicleNumber(request.getVehicleNumber());
+		createdVehicle.setVehicleNumber(vehicleNumber);
 		vehicleRepository.save(createdVehicle);
-		
-		// Add the vehicle to user object
-		User user = userService.findUserById(userId);
-		user.getUserVehicles().add(createdVehicle);
-		userRepository.save(user);
-		
 		
 		return createdVehicle;
 	}

@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.parking.Exceptions.SlotException;
+import com.parking.Models.Order;
 import com.parking.Models.Slot;
+import com.parking.Request.BookSlotRequest;
 import com.parking.Request.CreateSlotRequest;
 import com.parking.Response.Response;
 import com.parking.Service.SlotService;
@@ -27,21 +29,12 @@ public class SlotController {
 	@Autowired
 	private SlotService slotService;
 	
-	@PostMapping("/create") 
-	public ResponseEntity<Slot> createSlot(@RequestBody CreateSlotRequest req ) {
+	@PostMapping("/book")
+	public ResponseEntity<Order> bookSlotHandler(@RequestBody BookSlotRequest request) {
 		
-		Slot createSlot = slotService.createSlot(req);
+		Order order = slotService.bookSlot(request);
 		
-		return new ResponseEntity<Slot>(createSlot, HttpStatus.OK);
-		
-	}
-	
-	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Response> deleteSlot(@PathVariable Long id) throws SlotException {
-		
-		Response response = slotService.deleteSlot(id);
-		
-		return new ResponseEntity<Response>(response, HttpStatus.OK);
+		return new ResponseEntity<Order>(order, HttpStatus.OK);
 	}
 	
 	@GetMapping("/all")
@@ -52,18 +45,12 @@ public class SlotController {
 		return new ResponseEntity<List<Slot>>(allSlots, HttpStatus.OK);
 	}
 	
-	@PostMapping("/multiple/create")
-	public ResponseEntity<Response> createMultipleSlotsHandler(@RequestBody List<CreateSlotRequest> requests ) {
+	@PutMapping("/freeup/slot")
+	public ResponseEntity<Slot> freeUpSlotHandler(@RequestBody Long slotId)  {
 		
-		for(CreateSlotRequest request : requests) {
-			slotService.createSlot(request);
-		}
+		Slot slot = slotService.freeUpSlot(slotId);
 		
-		Response response = new Response();
-		response.setStatus(true);
-		response.setMessage("Multiple slots created successfully !");
-		
-		return new ResponseEntity<Response>(response, HttpStatus.OK);
+		return new ResponseEntity<Slot>(slot, HttpStatus.OK);
 	}
 
 }

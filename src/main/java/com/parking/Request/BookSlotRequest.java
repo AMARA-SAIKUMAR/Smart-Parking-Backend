@@ -2,16 +2,19 @@ package com.parking.Request;
 
 import java.time.LocalTime;
 
+import lombok.Data;
+
+@Data
 public class BookSlotRequest {
 	
-	LocalTime parkedOn;
+	Long slotId;
 	
-	LocalTime departuredOn;
+	String bookedTime;
 	
-	int parkedTime;
+	float parkHours;
 	
-	Long vehicleId;
+	String vehicleNumber;
 	
-	String wheelerType;
-
+	int amount;
+	
 }

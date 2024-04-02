@@ -19,5 +19,7 @@ public class Vehicle {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+//	private Long userId; No need of user for booking the Slot for parking
+	
 	private String vehicleNumber;
 }

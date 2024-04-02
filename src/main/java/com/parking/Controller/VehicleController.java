@@ -27,11 +27,9 @@ public class VehicleController {
 	private UserService userService;
 	
 	@PostMapping("/add")
-	public ResponseEntity<Vehicle> addVehicleHandler(@RequestBody CreateVehicleRequest request, 
-						@RequestHeader("Authorization") String jwt) throws UserException {
+	public ResponseEntity<Vehicle> addVehicleHandler(@RequestBody String vehicleNumber) {
 		
-		User user = userService.findUserProfileByJwt(jwt);
-		Vehicle vehicle = vehicleService.addVehicle(request, user.getId());
+		Vehicle vehicle = vehicleService.createVehicle(vehicleNumber);
 		
 		return new ResponseEntity<Vehicle>(vehicle, HttpStatus.OK);
 		

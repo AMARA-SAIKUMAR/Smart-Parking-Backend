@@ -56,6 +56,7 @@ public class AuthController {
 		createdUser.setEmail(email);
 		createdUser.setFullName(fullName);
 		createdUser.setPassword(passwordEncoder.encode(password));
+		createdUser.getRoles().add("ADMIN");
 		
 		User savedUser = userRepository.save(createdUser);
 		
@@ -63,7 +64,7 @@ public class AuthController {
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		
 		String token = jwtProvider.generateToken(authentication);
-		
+		System.out.println("Generated Token - " + token );
 		AuthResponse response = new AuthResponse();
 		response.setToken(token);
 		response.setMessage("Sign up successfull !");
@@ -88,7 +89,7 @@ public class AuthController {
 		
 		response.setMessage("Sign in successfull !");
 		response.setToken(token);
-		
+		System.out.println("Sign in successfull in backend");
 		return new ResponseEntity<AuthResponse>(response, HttpStatus.ACCEPTED);
 		
 	}

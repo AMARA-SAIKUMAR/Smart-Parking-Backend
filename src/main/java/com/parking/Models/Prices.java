@@ -8,21 +8,22 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
+
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Entity
 public class Prices {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	private int id;
-
-	private int twoWheelerPrice;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	Long id;
 	
-	private int threeWheelerPrice;
+	int twoWheelerPrice;
 	
-	private int fourWheelerPrice;
+	int threeWheelerPrice;
+	
+	int fourWheelerPrice;
 	
 	
 }

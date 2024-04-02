@@ -3,9 +3,9 @@ package com.parking.Repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.parking.Models.Review;
+import com.parking.Models.Order;
 
 @Repository
-public interface ReviewRepository extends JpaRepository<Review, Long> {
+public interface OrderRepository extends JpaRepository<Order, Long> {
 
 }

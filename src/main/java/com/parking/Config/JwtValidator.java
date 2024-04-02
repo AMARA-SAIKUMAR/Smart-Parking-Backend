@@ -53,7 +53,7 @@ public class JwtValidator extends OncePerRequestFilter {
 				
 			} catch (Exception e) {
 				
-				throw new BadCredentialsException("Invalid jwt ");
+				throw new BadCredentialsException("Invalid jwt "+jwt);
 			}
 		}
 		filterChain.doFilter(request, response);

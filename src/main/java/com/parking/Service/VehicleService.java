@@ -7,6 +7,6 @@ import com.parking.Request.CreateVehicleRequest;
 public interface VehicleService {
 	
 	// Add Vehicle 
-	public Vehicle addVehicle(CreateVehicleRequest request, Long userId) throws UserException;
+	public Vehicle createVehicle(String vehicleNumber);
 
 }

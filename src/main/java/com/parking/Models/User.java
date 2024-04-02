@@ -1,5 +1,6 @@
 package com.parking.Models;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -29,11 +30,6 @@ public class User {
 	
 	private String password;
 	
-	private String licenseNumber;
-	
-	@OneToMany
-	private Set<Vehicle> userVehicles = new HashSet<>();
-	
-	
+	private ArrayList<String> roles = new ArrayList<>();
 
 }

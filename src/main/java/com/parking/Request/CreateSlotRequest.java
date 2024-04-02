@@ -11,5 +11,7 @@ public class CreateSlotRequest {
 	
 	private String wheelerType;
 	
+	private int noOfSlots;
+	
 
 }
