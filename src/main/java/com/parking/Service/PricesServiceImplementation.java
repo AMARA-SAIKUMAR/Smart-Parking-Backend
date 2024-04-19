@@ -50,4 +50,23 @@ public class PricesServiceImplementation implements PricesService {
 		return updatedPrice;
 	}
 
+	@Override
+	public Integer getPriceByType(String type) {
+
+		int price = 0;
+		switch (type) {
+			case "two" : 
+				price = getTwoWheelerParkingPrice();
+				break;
+			case "three" : 
+				price = getThreeWheelerParkingPrice();
+				break;
+			case "four" :
+				price = getFourWheelerParkingPrice();
+				break;
+		}
+		
+		return price;
+	}
+
 }

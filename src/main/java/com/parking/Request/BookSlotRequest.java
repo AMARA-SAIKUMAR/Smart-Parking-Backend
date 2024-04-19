@@ -15,6 +15,6 @@ public class BookSlotRequest {
 	
 	String vehicleNumber;
 	
-	int amount;
+//	int amount;
 	
 }
