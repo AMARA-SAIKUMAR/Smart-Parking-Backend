@@ -101,15 +101,20 @@ public class SlotServiceImplementation implements SlotService {
 		bookOrder.setSlotId(req.getSlotId());
 //		bookOrder.setUser(user);
 		Order savedOrder = orderRepository.save(bookOrder);
+		
+		new Thread() {
+			public void run() {
+				try {
+					Long delay = (long) ((slot.getParkHours() * 60 + 0 ) * 60 * 1000   );
+					Thread.sleep(delay);
+					freeUpSlot(slot.getId());
+					System.out.println("Slots occupancy status changed successfully ..!");
+				} catch (Exception e) {
+					System.out.println(e);
+				}
+			}
+		}.start();
 				
-//		try {
-//			freeUpSlot(req);
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		// No need of saving the payment details because
-		// the amount is already stored in the order 
 		
 		return savedOrder;
 	}
@@ -146,6 +151,33 @@ public class SlotServiceImplementation implements SlotService {
 			}
 			
 		return slotsByType;
+	}
+
+	@Override
+	public List<Slot> occupiedSlots() {
+		
+		List<Slot> occupiedSlots = new ArrayList<>();
+		
+		List<Slot> allSlots = findAllSlots();
+		
+		for(Slot slot : allSlots) {
+			if(!slot.getOccupancyStatus().equals("free")) {
+				occupiedSlots.add(slot);
+			}
+		}
+		
+		return occupiedSlots;
+	}
+
+	@Override
+	public void freeupAllSlots() {
+		
+		List<Slot> allSlots = findAllSlots();
+		
+		for(Slot slot : allSlots) {
+			freeUpSlot(slot.getId());
+		}
+		
 	}	
 	
 }

@@ -4,8 +4,12 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import org.springframework.context.annotation.Bean;
+
+import static org.springframework.security.config.Customizer.withDefaults;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,37 +21,50 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Configuration
-public class AppConfig {
+@EnableWebSecurity
+public class AppConfig extends WebSecurityConfiguration {
 	
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		
-		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-		    .authorizeHttpRequests((Authorize) -> Authorize
-		    												.requestMatchers("/admin/**").authenticated()
-		    											    .anyRequest().permitAll() )
-		    // I have to figure out this, I should disable this while sign up 
-//		    .addFilterBefore(new JwtValidator(), BasicAuthenticationFilter.class)
-		    .csrf().disable()
-		    .cors().configurationSource(new CorsConfigurationSource() {
-				
-				@Override
-				public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
-					
-					CorsConfiguration cfg = new CorsConfiguration();
-					cfg.setAllowedOrigins(Arrays.asList(
-							"http://localhost:3000"
-						));
-				cfg.setAllowedMethods(Collections.singletonList("*"));
-				cfg.setAllowCredentials(true);
-				cfg.setAllowedHeaders(Collections.singletonList("*"));
-				cfg.setExposedHeaders(Arrays.asList("Authorization"));
-				cfg.setMaxAge(3600L);
-				return cfg;
-				}
-			})
-		    .and()
-		    .httpBasic().and().formLogin();
+
+        http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests((Authorize) -> Authorize
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .anyRequest().permitAll())
+
+                // I have to figure out this, I should disable this while sign up
+                
+//            .addFilterAfter(new JwtProvider(), BasicAuthenticationFilter.class)
+            .addFilterBefore(new JwtValidator(), BasicAuthenticationFilter.class)
+                .csrf(csrf -> csrf.disable())
+                .formLogin(login -> login.successHandler((request, response, authentication) ->
+			                {
+			                	String role = authentication.getAuthorities().toString();
+			                	if(role == "ROLE_ADMIN") {
+			                		response.sendRedirect("/admin/dashboard");
+			                	}
+			                	else {
+			                		response.sendRedirect("/");
+			                	}
+			                }
+                		))
+                        .cors(cors -> cors.configurationSource(new CorsConfigurationSource() {
+
+                            @Override
+                            public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+
+                                CorsConfiguration cfg = new CorsConfiguration();
+                                cfg.setAllowedOrigins(Arrays.asList(
+                                        "http://localhost:3000"
+                                ));
+                                cfg.setAllowedMethods(Collections.singletonList("*"));
+                                cfg.setAllowCredentials(true);
+                                cfg.setAllowedHeaders(Collections.singletonList("*"));
+                                cfg.setExposedHeaders(Arrays.asList("Authorization"));
+                                cfg.setMaxAge(3600L);
+                                return cfg;
+                            }
+                        }));
 		
 		return http.build();
 	}
