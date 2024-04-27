@@ -13,6 +13,6 @@ public interface PricesService {
 	
 	public Prices updateParkingPrices(UpdatePricesRequest request);
 	
-
+	public Integer getPriceByType(String type);
 
 }

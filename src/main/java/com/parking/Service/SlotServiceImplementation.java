@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestHeader;
 
+import com.fasterxml.jackson.databind.node.IntNode;
 import com.parking.Exceptions.SlotException;
 import com.parking.Models.Order;
 import com.parking.Models.Slot;
@@ -41,6 +42,9 @@ public class SlotServiceImplementation implements SlotService {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private PricesService pricesService;
 
 	@Override
 	public Slot createSlot(String wheelerType) {
@@ -89,7 +93,9 @@ public class SlotServiceImplementation implements SlotService {
 		DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_TIME;
 		LocalTime bookedTime = LocalTime.parse(req.getBookedTime(), formatter);
 		slot.setBookedTime(bookedTime);
+//		System.out.println("Parking hours --- " + req.getParkHours());
 		slot.setParkHours(req.getParkHours());
+//		System.out.println("Parking hours --- " + slot.getParkHours());
 		slotRepository.save(slot);
 		
 		// create order
@@ -97,7 +103,13 @@ public class SlotServiceImplementation implements SlotService {
 		bookOrder.setDate(LocalDate.now());
 		bookOrder.setWheelerType(slot.getSlotType());
 //		bookOrder.setPaymentStatus(req.getPaymentStatus()); This is done by paymentController
-		bookOrder.setAmount(req.getAmount());
+		int price = pricesService.getPriceByType(slot.getSlotType());
+//		System.out.println("Price By Type --- " + price);
+//		System.out.println("Park Hours ----- " + slot.getParkHours());
+//		System.out.println("Total Amount ----- " + price * slot.getParkHours());
+//		System.out.println("Total Amount in int ----- " + (int)(price * slot.getParkHours()));
+		int amount = (int)(slot.getParkHours() * price);
+		bookOrder.setAmount(amount);
 		bookOrder.setSlotId(req.getSlotId());
 //		bookOrder.setUser(user);
 		Order savedOrder = orderRepository.save(bookOrder);

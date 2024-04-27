@@ -1,6 +1,7 @@
 package com.parking.Config;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 
 import org.springframework.context.annotation.Bean;
@@ -11,6 +12,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -29,25 +31,25 @@ public class AppConfig extends WebSecurityConfiguration {
 
         http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((Authorize) -> Authorize
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
+//                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().permitAll())
 
                 // I have to figure out this, I should disable this while sign up
                 
 //            .addFilterAfter(new JwtProvider(), BasicAuthenticationFilter.class)
-            .addFilterBefore(new JwtValidator(), BasicAuthenticationFilter.class)
+//            .addFilterBefore(new JwtValidator(), BasicAuthenticationFilter.class)
                 .csrf(csrf -> csrf.disable())
-                .formLogin(login -> login.successHandler((request, response, authentication) ->
-			                {
-			                	String role = authentication.getAuthorities().toString();
-			                	if(role == "ROLE_ADMIN") {
-			                		response.sendRedirect("/admin/dashboard");
-			                	}
-			                	else {
-			                		response.sendRedirect("/");
-			                	}
-			                }
-                		))
+//                .formLogin(login -> login.successHandler((request, response, authentication) ->
+//			                {
+//			                	Collection<? extends GrantedAuthority> role = authentication.getAuthorities();
+//			                	if(role.equals("ROLE_ADMIN")) {
+//			                		response.sendRedirect("/admin/dashboard");
+//			                	}
+//			                	else {
+//			                		response.sendRedirect("/");
+//			                	}
+//			                }
+//                		))
                         .cors(cors -> cors.configurationSource(new CorsConfigurationSource() {
 
                             @Override
