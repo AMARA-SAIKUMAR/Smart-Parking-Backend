@@ -28,6 +28,8 @@ public interface SlotService {
 	
 	public List<Slot> findSlotsByType(String slotType);
 	
-	// Add the payment Details in the 
+	public List<Slot> occupiedSlots();
+	
+	public void freeupAllSlots();
 	
 }

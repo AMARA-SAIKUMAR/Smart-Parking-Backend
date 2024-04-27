@@ -62,12 +62,35 @@ public class SlotController {
 		return new ResponseEntity<List<Slot>>(allSlots, HttpStatus.OK);
 	}
 	
+
 	@PutMapping("/freeup/{slotId}")
 	public ResponseEntity<Slot> freeUpSlotHandler(@PathVariable Long slotId)  {
+
 		
 		Slot slot = slotService.freeUpSlot(slotId);
 		
 		return new ResponseEntity<Slot>(slot, HttpStatus.OK);
 	}
+	
+	@GetMapping("/occupied")
+	public ResponseEntity<List<Slot>> occupiedSlotsHandler() {
+		
+		List<Slot> occupiedSlots = slotService.occupiedSlots();
+		
+		return new ResponseEntity<List<Slot>>(occupiedSlots, HttpStatus.OK);
+	}
+	
+	@PutMapping("/freeup/all")
+	public ResponseEntity<Response> freeupSlotsHandler() {
+		
+		slotService.freeupAllSlots();
+		
+		Response response = new Response();
+		response.setMessage("All slots are made free successfully");
+		response.setStatus(true);
+		
+		return new ResponseEntity<Response>(response, HttpStatus.OK);
+	}
+	
 
 }

@@ -35,14 +35,14 @@ public class AdminController {
 	@Autowired
 	private PricesService pricesService;
 	
-//	@PostMapping("slot/create") 
-//	public ResponseEntity<Slot> createSlot(@RequestBody CreateSlotRequest req ) {
-//		
-//		Slot createSlot = slotService.createSlot(req);
-//		
-//		return new ResponseEntity<Slot>(createSlot, HttpStatus.OK);
-//		
-//	}
+	@PostMapping("slot/create") 
+	public ResponseEntity<Slot> createSlot(@RequestBody CreateSlotRequest req ) {
+		
+		Slot createSlot = slotService.createSlot(req.getWheelerType());
+		
+		return new ResponseEntity<Slot>(createSlot, HttpStatus.OK);
+		
+	}
 	
 	// Handler To create admins through Admin Account ??
 	
@@ -80,7 +80,7 @@ public class AdminController {
 	}
 	
 	@GetMapping("slot")
-	public ResponseEntity<List<Slot>> findSlotsByTypeHandler(@RequestParam("type") String type) {
+	public ResponseEntity<List<Slot>> findSlotsByTypeHandler(@RequestParam String type) {
 		
 		List<Slot> slotsByType = slotService.findSlotsByType(type);
 		

@@ -41,14 +41,15 @@ public class PaymentController {
 		
 		Optional<Order> findById = orderRepository.findById(orderId);
 		Order order = findById.get();
-		
+		System.out.println("OrderId - "+ order.getId());
+		System.out.println("Ortder Amount = " + order.getAmount());
 		try {
 			
 			RazorpayClient razorpay = new RazorpayClient(apiKey, apiSecret);
 			
 			JSONObject paymentLinkRequest = new JSONObject();
 			
-			paymentLinkRequest.put("amount", order.getAmount()*100); // The amount should be in paise
+			paymentLinkRequest.put("amount", order.getAmount() * 100); // The amount should be in paise
 			paymentLinkRequest.put("currency", "INR");
 		
 			paymentLinkRequest.put("callback_url", "http://localhost:3000/payment/"+orderId);
@@ -63,7 +64,8 @@ public class PaymentController {
 			
 			response.setPayment_link_id(paymentLinkId);
 			response.setPayment_link_url(paymentLinkUrl);
-			
+			System.out.println("Payment link id - " + response.getPayment_link_id());
+			System.out.println("Payment link url - " + response.getPayment_link_url());
 			return new ResponseEntity<PaymentLinkResponse>(response, HttpStatus.CREATED);
 			
 			
